@@ -23,7 +23,7 @@ const loginInstitucional = ({user, pass}) => axios({
 
 const loginDB = () => axios({
   method: 'POST',
-  url: 'http://192.168.2.56:443/auth/local',
+  url: 'http://209.13.149.170:443/auth/local',
   data: qs.stringify({
     identifier,
     password
@@ -32,33 +32,33 @@ const loginDB = () => axios({
 
 const traerHisopados = () => axios({
   method: 'GET',
-  url: 'http://192.168.2.56:443/solicitudes-hisopados'
+  url: 'http://209.13.149.170:443/solicitudes-hisopados'
 })
 
 const getSolicitud = async (idSolicitud, token) => await axios({
   method: 'GET',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-hisopados/${idSolicitud}`
+  url: `http://209.13.149.170:443/solicitudes-hisopados/${idSolicitud}`
 })
 
 const putSolicitud = async (idSolicitud, datosSolicitud, token) => await axios({
   method: 'PUT',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-hisopados/${idSolicitud}`,
+  url: `http://209.13.149.170:443/solicitudes-hisopados/${idSolicitud}`,
   data: datosSolicitud
 })
 
 const putPersona = (idPersona, datosPersona, token) => axios({
   method: 'PUT',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/personas/${idPersona}`,
+  url: `http://209.13.149.170:443/personas/${idPersona}`,
   data: datosPersona
 })
 
 const postContactados = (datosContactados, token) => axios({
   method: 'POST',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-contactados`,
+  url: `http://209.13.149.170:443/solicitudes-contactados`,
   data: datosContactados
 })
 

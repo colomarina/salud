@@ -27,9 +27,22 @@ const Solicitud = () => {
           console.log("Error:", error);
         });
     } else {
-      history.push(`/`)
+      history.push(`/`);
     }
   }, [idSolicitud]);
+
+  const volverATabla = () => {
+    const sacarCaptura = {
+      capturado_por: "",
+    };
+    putSolicitud(solicitud.id, sacarCaptura, user.token)
+      .then(() => {
+        history.push("/inicio");
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -58,25 +71,23 @@ const Solicitud = () => {
         },
         user.token
       )
-        .then((responsePersona) => {
-          const { data } = responsePersona;
-          console.log(data);
+        .then(() => {
           const nuevaObservacion = {
-            'observaciones': observaciones,
-            'capturado_por': '',
+            observaciones: observaciones,
+            capturado_por: "",
           };
           // Guardo las observaciones y libero la captura
           putSolicitud(solicitud.id, nuevaObservacion, user.token)
-            .then((responseSolicitud) => {
+            .then(() => {
               const nuevoContactado = {
                 estado: 2,
                 operador: user.user,
                 solicitud: solicitud.id,
                 observaciones: observaciones,
               };
-              // Guardo el contacto 
+              // Guardo el contacto
               postContactados(nuevoContactado, user.token)
-                .then((responseContactados) => history.push(`/inicio`))
+                .then(() => history.push(`/inicio`))
                 .catch((error) => {
                   console.log("Error:", error);
                 });
@@ -90,7 +101,17 @@ const Solicitud = () => {
         });
     },
   });
-  return <>{solicitud && <Card solicitud={solicitud} formik={formik} />}</>;
+  return (
+    <>
+      {solicitud && (
+        <Card
+          solicitud={solicitud}
+          formik={formik}
+          volverATabla={volverATabla}
+        />
+      )}
+    </>
+  );
 };
 
 export default Solicitud;

@@ -1,15 +1,18 @@
 import React from "react";
 
-const Card = ({ solicitud, formik }) => (
-  <form onSubmit={formik.handleSubmit} className="container">
+const Card = ({ solicitud, formik, volverATabla }) => (
+  <form onSubmit={formik.handleSubmit} className="container pt-4">
     <div className="card text-center">
       <div className="card-header">Solicitud: {solicitud.id}</div>
-      <div className="card-body">
-        <h5 className="card-title">{`${solicitud.persona.nombre} ${solicitud.persona.apellido}`}</h5>
+      <div className="card-body background">
+        <h5 className="card-title">
+          Nombre: {`${solicitud.persona.nombre} ${solicitud.persona.apellido}`}
+        </h5>
         <p className="card-text">
+          <p className="fs-5 fw-bold">Datos a modificar:</p>
           <div className="container">
             <div className="row">
-              <div className="col">
+              <div className="col m-2">
                 <label htmlFor="saludNombre" className="form-label">
                   Nombre
                 </label>
@@ -21,7 +24,7 @@ const Card = ({ solicitud, formik }) => (
                   value={formik.values.saludNombre}
                 />
               </div>
-              <div className="col">
+              <div className="col m-2">
                 <label htmlFor="saludApellido" className="form-label">
                   Apellido
                 </label>
@@ -35,7 +38,7 @@ const Card = ({ solicitud, formik }) => (
               </div>
             </div>
             <div className="row">
-              <div className="col">
+              <div className="col m-2">
                 <label htmlFor="saludDomicilio" className="form-label">
                   Domicilio
                 </label>
@@ -47,7 +50,7 @@ const Card = ({ solicitud, formik }) => (
                   value={formik.values.saludDomicilio}
                 />
               </div>
-              <div className="col">
+              <div className="col m-2">
                 <label htmlFor="saludLocalidad" className="form-label">
                   Localidad (Lo hacemos un select?)
                 </label>
@@ -60,23 +63,30 @@ const Card = ({ solicitud, formik }) => (
                 />
               </div>
             </div>
-            <label htmlFor="observaciones" className="form-label">
-              Observaciones
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="observaciones"
-              onChange={formik.handleChange}
-              value={formik.values.observaciones}
-            />
+            <div className="m-2">
+              <label htmlFor="observaciones" className="form-label">
+                Observaciones
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="observaciones"
+                onChange={formik.handleChange}
+                value={formik.values.observaciones}
+              />
+            </div>
           </div>
         </p>
-        <button type="submit" className="btn btn-primary">
-          Guardar
-        </button>
+        <div className="d-flex justify-content-around">
+          <button type="submit" className="btn btn-danger" onClick={volverATabla}>
+            Volver
+          </button>
+          <button type="submit" className="btn btn-success">
+            Guardar Solicitud
+          </button>
+        </div>
       </div>
-      <div className="card-footer text-muted">Sistema Salud</div>
+      <div className="card-footer">Sistema Salud</div>
     </div>
   </form>
 );

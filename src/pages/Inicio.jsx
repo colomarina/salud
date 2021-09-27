@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Table from "../components/Table";
+import TableWithFilters from "../components/TableWithFilters";
 import { traerHisopados } from "../services/axiosServices.mjs";
 import { useHistory } from "react-router-dom";
 
@@ -41,12 +41,14 @@ const Inicio = () => {
           console.log(error);
         });
     } else {
-      history.push(`/`)
+      history.push(`/`);
     }
   }, [recargar]);
   return (
-    <div className="container">
-      <Table hisopados={hisopados} />
+    <div className="background">
+      <div className="table-responsive">
+        <TableWithFilters hisopados={hisopados} />
+      </div>
     </div>
   );
 };
