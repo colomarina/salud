@@ -12,6 +12,7 @@ import {
 
 const Solicitud = () => {
   const [solicitud, setSolicitud] = useState();
+  const [showMessageError, setShowMessageError] = useState(false);
   const history = useHistory();
   const { idSolicitud } = useParams();
   const [user, setUser] = useState();
@@ -22,14 +23,17 @@ const Solicitud = () => {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       getSolicitud(idSolicitud, user.token)
-        .then((data) => setSolicitud(data.data))
+        .then((data) => {
+          console.log(data.data)
+          setSolicitud(data.data)
+        })
         .catch((error) => {
           console.log("Error:", error);
         });
     } else {
       history.push(`/`);
     }
-  }, [idSolicitud]);
+  }, [history, idSolicitud]);
 
   const volverATabla = () => {
     const sacarCaptura = {
@@ -51,6 +55,7 @@ const Solicitud = () => {
       saludDomicilio: "",
       saludLocalidad: "",
       observaciones: "",
+      estado: "",
     },
     onSubmit: (values) => {
       const {
@@ -59,46 +64,52 @@ const Solicitud = () => {
         saludDomicilio,
         saludLocalidad,
         observaciones,
+        estado
       } = values;
-      // Guardo en Persona los datos modificados
-      putPersona(
-        solicitud.persona.id,
-        {
-          saludNombre,
-          saludApellido,
-          saludDomicilio,
-          saludLocalidad,
-        },
-        user.token
-      )
-        .then(() => {
-          const nuevaObservacion = {
-            observaciones: observaciones,
-            capturado_por: "",
-          };
-          // Guardo las observaciones y libero la captura
-          putSolicitud(solicitud.id, nuevaObservacion, user.token)
-            .then(() => {
-              const nuevoContactado = {
-                estado: 2,
-                operador: user.user,
-                solicitud: solicitud.id,
-                observaciones: observaciones,
-              };
-              // Guardo el contacto
-              postContactados(nuevoContactado, user.token)
-                .then(() => history.push(`/inicio`))
-                .catch((error) => {
-                  console.log("Error:", error);
-                });
-            })
-            .catch((error) => {
-              console.log("Error:", error);
-            });
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
+      if(estado && estado !== 'Seleccionar una opción'){
+        setShowMessageError(false)
+        // Guardo en Persona los datos modificados
+        putPersona(
+          solicitud.persona.id,
+          {
+            saludNombre,
+            saludApellido,
+            saludDomicilio,
+            saludLocalidad,
+          },
+          user.token
+        )
+          .then(() => {
+            const nuevaObservacion = {
+              observaciones: observaciones,
+              capturado_por: "",
+            };
+            // Guardo las observaciones y libero la captura
+            putSolicitud(solicitud.id, nuevaObservacion, user.token)
+              .then(() => {
+                const nuevoContactado = {
+                  estado,
+                  operador: user.user,
+                  solicitud: solicitud.id,
+                  observaciones: observaciones,
+                };
+                // Guardo el contacto
+                postContactados(nuevoContactado, user.token)
+                  .then(() => history.push(`/inicio`))
+                  .catch((error) => {
+                    console.log("Error:", error);
+                  });
+              })
+              .catch((error) => {
+                console.log("Error:", error);
+              });
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+          });
+      } else {
+        setShowMessageError(true)
+      }
     },
   });
   return (
@@ -108,6 +119,7 @@ const Solicitud = () => {
           solicitud={solicitud}
           formik={formik}
           volverATabla={volverATabla}
+          error={showMessageError}
         />
       )}
     </>

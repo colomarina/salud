@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { loginInstitucional, loginDB } from "../services/axiosServices.mjs";
+import { loginDB } from "../services/axiosServices.mjs";
 import { useHistory } from "react-router-dom";
 import { setToken } from "../services/axiosServices.mjs";
 import Loading from "../components/Loading";

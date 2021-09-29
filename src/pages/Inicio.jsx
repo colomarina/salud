@@ -23,15 +23,14 @@ const Inicio = () => {
               idPersona: elemento.persona.id,
               nombreCompletoPersona: `${elemento.persona.nombre} ${elemento.persona.apellido}`,
               documento: elemento.persona.dni,
-              contactoEstrecho: elemento.p_contacto_estrecho
-                ? "Verdadero"
-                : "Falso",
-              esDeRiesgo: elemento.p_es_riesgo ? "Verdadero" : "Falso",
-              faltaOlfatoGusto: elemento.p_falta_olfato_gusto
-                ? "Verdadero"
-                : "Falso",
-              tieneSintomas: elemento.p_tiene_sintomas ? "Verdadero" : "Falso",
-              editar: elemento.id,
+              contactoEstrecho: elemento.p_contacto_estrecho ? `✔️` : `❌`,
+              esDeRiesgo: elemento.p_es_riesgo ? `✔️` : `❌`,
+              faltaOlfatoGusto: elemento.p_falta_olfato_gusto ? `✔️` : `❌`,
+              tieneSintomas: elemento.p_tiene_sintomas ? `✔️` : `❌`,
+              editar: {
+                capturado_por: elemento.capturado_por.slice(0, -25),
+                id: elemento.id
+              },
             };
           });
           setHisopados(personas);
@@ -43,7 +42,7 @@ const Inicio = () => {
     } else {
       history.push(`/`);
     }
-  }, [recargar]);
+  }, [history, recargar]);
   return (
     <div className="background">
       <div className="table-responsive">

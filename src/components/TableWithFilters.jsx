@@ -151,19 +151,36 @@ function Table({ columns, data }) {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   if (cell.column.Header === "Tomar Solicitud") {
-                    return (
-                      <td {...cell.getCellProps()}>
-                        <div className="d-grid gap-2">
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() => tomarSolicitud(cell.value)}
-                          >
-                            Solicitud: {cell.render("Cell")}
-                          </button>
-                        </div>
-                      </td>
-                    );
+                    if(!cell.value.capturado_por){
+                      return (
+                        <td {...cell.getCellProps()}>
+                          <div className="d-grid gap-2">
+                            <button
+                              type="button"
+                              className="btn btn-success"
+                              onClick={() => tomarSolicitud(cell.value.id)}
+                            >
+                              Solicitud: {cell.value.id}
+                            </button>
+                          </div>
+                        </td>
+                      );
+                    } else {
+                      return (
+                        <td {...cell.getCellProps()}>
+                          <div className="d-grid gap-2">
+                            <button
+                              type="button"
+                              className="btn btn-warning"
+                              disabled
+                            >
+                              Tomada por: {cell.value.capturado_por}
+                            </button>
+                          </div>
+                        </td>
+                      );
+
+                    }
                   }
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -175,12 +192,6 @@ function Table({ columns, data }) {
         </tbody>
       </table>
       <br />
-      {/* <div>Showing the first 20 results of {rows.length} rows</div>
-      <div>
-        <pre>
-          <code>{JSON.stringify(state.filters, null, 2)}</code>
-        </pre>
-      </div> */}
     </>
   );
 }

@@ -1,8 +1,15 @@
 import axios from "axios";
 import qs from "querystring";
 
-const identifier = "solicitud-hisopados@estebanecheverria.gob.ar";
-const password = "123456789";
+const urlAuth = 'http://' + process.env.REACT_APP_URL + '/auth/local' ;
+const urlPersona = 'http://' + process.env.REACT_APP_URL + '/personas';
+const urlHisopados = 'http://' + process.env.REACT_APP_URL + '/solicitudes-hisopados' ;
+const urlContactados = 'http://' + process.env.REACT_APP_URL + '/solicitudes-contactados' ;
+
+
+// const identifier = "solicitud-hisopados@estebanecheverria.gob.ar";
+const identifier = process.env.REACT_APP_DB_IDENTIFIER
+const password = process.env.REACT_APP_DB_PASSWORD;
 
 let token = null;
 
@@ -20,45 +27,45 @@ const loginInstitucional = ({user, pass}) => axios({
     pass
   }),
 })
-
+// POST A DB
 const loginDB = () => axios({
   method: 'POST',
-  url: 'http://192.168.2.56:443/auth/local',
+  url: urlAuth,
   data: qs.stringify({
     identifier,
     password
   }),
 })
-
+// GET A HISOPADOS
 const traerHisopados = () => axios({
   method: 'GET',
-  url: 'http://192.168.2.56:443/solicitudes-hisopados'
+  url: urlHisopados
 })
-
+// GET A HISOPADO/:ID
 const getSolicitud = async (idSolicitud, token) => await axios({
   method: 'GET',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-hisopados/${idSolicitud}`
+  url: `${urlHisopados}/${idSolicitud}`
 })
-
+// PUT A HISOPADO/:ID
 const putSolicitud = async (idSolicitud, datosSolicitud, token) => await axios({
   method: 'PUT',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-hisopados/${idSolicitud}`,
+  url: `${urlHisopados}/${idSolicitud}`,
   data: datosSolicitud
 })
-
+// PUT A PERSONA/:ID
 const putPersona = (idPersona, datosPersona, token) => axios({
   method: 'PUT',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/personas/${idPersona}`,
+  url: `${urlPersona}/${idPersona}`,
   data: datosPersona
 })
-
+// POST A CONTACTADOS
 const postContactados = (datosContactados, token) => axios({
   method: 'POST',
   headers: { Authorization: `Bearer ${token}` },
-  url: `http://192.168.2.56:443/solicitudes-contactados`,
+  url: urlContactados,
   data: datosContactados
 })
 
