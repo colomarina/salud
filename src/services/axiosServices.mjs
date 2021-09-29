@@ -6,8 +6,6 @@ const urlPersona = 'http://' + process.env.REACT_APP_URL + '/personas';
 const urlHisopados = 'http://' + process.env.REACT_APP_URL + '/solicitudes-hisopados' ;
 const urlContactados = 'http://' + process.env.REACT_APP_URL + '/solicitudes-contactados' ;
 
-
-// const identifier = "solicitud-hisopados@estebanecheverria.gob.ar";
 const identifier = process.env.REACT_APP_DB_IDENTIFIER
 const password = process.env.REACT_APP_DB_PASSWORD;
 
