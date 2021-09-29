@@ -16,29 +16,29 @@ const Login = () => {
     },
     onSubmit: ({ user, pass }) => {
       setMostrarLoading(true);
-      loginInstitucional({ user, pass })
-        .then((response) => {
-          if (response.status === 200) {
-            loginDB()
-              .then(({ data }) => {
-                window.localStorage.setItem(
-                  "loggedUser",
-                  JSON.stringify({
-                    user,
-                    token: data.jwt,
-                  })
-                );
-                setToken(data.jwt);
-                history.push(`/inicio`);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          }
+      // loginInstitucional({ user, pass })
+      //   .then((response) => {
+      //     if (response.status === 200) {
+      loginDB()
+        .then(({ data }) => {
+          window.localStorage.setItem(
+            "loggedUser",
+            JSON.stringify({
+              user,
+              token: data.jwt,
+            })
+          );
+          setToken(data.jwt);
+          history.push(`/inicio`);
         })
         .catch((error) => {
           console.log(error);
         });
+      // }
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // });
     },
   });
   return (
