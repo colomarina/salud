@@ -37,11 +37,7 @@ const Login = () => {
           }
         })
         .catch((error) => {
-          const e = {
-            status: error.response.status,
-            statusMessage: error.response.statusText,
-          };
-          console.log(e);
+          console.log(error);
         });
     },
   });

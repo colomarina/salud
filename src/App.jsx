@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Error404 from "./components/Error404";
@@ -8,11 +8,14 @@ import Login from "./pages/Login";
 import Solicitud from "./pages/Solicitud";
 
 function App() {
+  useEffect(() => {
+    document.title= "Sistema Salud"
+  }, [])
   return (
     <BrowserRouter>
       <Header />
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route exact path="/" component={Login} title="Login" />
         <Route exact path="/inicio/" component={Inicio} />
         <Route exact path="/solicitud/:idSolicitud" component={Solicitud} />
         <Route path='*' exact={true} component={Error404} />
