@@ -66,14 +66,16 @@ fuzzyTextFilterFn.autoRemove = (val) => !val;
 function Table({ columns, data }) {
   const history = useHistory();
   const tomarSolicitud = async (idSolicitud) => {
-    const { user, token } = await getUser();
+    const { token } = await getUser();
+    // const { user, token } = await getUser();
     const { data } = await getSolicitud(idSolicitud, token);
     if (!data.capturado_por) {
       const dataSolicitud = await putSolicitud(
         idSolicitud,
-        { capturado_por: user },
+        { capturado_por: 'lmarina' },
         token
       );
+      console.log('Solicitud', dataSolicitud)
       if (dataSolicitud.status === 200)
         history.push(`/solicitud/${idSolicitud}`);
       else console.log(dataSolicitud);
@@ -216,6 +218,12 @@ const TableWithFilters = ({ hisopados }) => {
       {
         Header: "Persona",
         columns: [
+          {
+            Header: "Fecha de Solicitud",
+            accessor: "fechaSolicitud",
+            Filter: "",
+            filter: "includes",
+          },
           {
             Header: "Documento",
             accessor: "documento",

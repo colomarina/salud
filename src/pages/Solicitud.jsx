@@ -24,7 +24,6 @@ const Solicitud = () => {
       setUser(user);
       getSolicitud(idSolicitud, user.token)
         .then((data) => {
-          console.log(data.data)
           setSolicitud(data.data)
         })
         .catch((error) => {

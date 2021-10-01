@@ -1,144 +1,78 @@
 import React from "react";
-
-const TablePersona = ({ documento, nombre, apellido, celular }) => (
-  <div className="table-responsive">
-    <table class="table table-bordered border-dark">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Documento</th>
-          <th>Celular</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{nombre}</td>
-          <td>{apellido}</td>
-          <td>{documento}</td>
-          <td>{celular}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
+import DataPerson, { DataPersonSalud } from "./DataPerson";
+import FormPerson from "./FormPerson";
 
 const Card = ({ solicitud, formik, volverATabla, error }) => (
-  <form onSubmit={formik.handleSubmit} className="container pt-4">
-    <div className="card text-center">
-      <div className="card-header">Solicitud: {solicitud.id}</div>
-      <div className="card-body background">
-        <h5 className="card-title fw-bold">Datos de la Persona:</h5>
-        <TablePersona
-          documento={solicitud.persona.dni}
-          nombre={solicitud.persona.nombre}
-          apellido={solicitud.persona.apellido}
-          celular={solicitud.persona.celular}
-        />
-        <p className="card-text">
-          <p className="fs-5 fw-bold">Datos a Modificar:</p>
-          <div className="container">
-            <div className="row">
-              <div className="col m-2">
-                <label htmlFor="saludNombre" className="form-label">
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="saludNombre"
-                  onChange={formik.handleChange}
-                  value={formik.values.saludNombre}
-                />
-              </div>
-              <div className="col m-2">
-                <label htmlFor="saludApellido" className="form-label">
-                  Apellido
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="saludApellido"
-                  onChange={formik.handleChange}
-                  value={formik.values.saludApellido}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col m-2">
-                <label htmlFor="saludDomicilio" className="form-label">
-                  Domicilio
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="saludDomicilio"
-                  onChange={formik.handleChange}
-                  value={formik.values.saludDomicilio}
-                />
-              </div>
-              <div className="col m-2">
-                <label htmlFor="saludLocalidad" className="form-label">
-                  Localidad (Lo hacemos un select?)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="saludLocalidad"
-                  onChange={formik.handleChange}
-                  value={formik.values.saludLocalidad}
-                />
-              </div>
-            </div>
-            <div className="m-2">
-              <label htmlFor="observaciones" className="form-label">
-                Observaciones
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="observaciones"
-                onChange={formik.handleChange}
-                value={formik.values.observaciones}
+  <form onSubmit={formik.handleSubmit} className="container-xl pt-2">
+    <div className="alert alert-success text-center fw-bold" role="alert">
+      Solicitud: {solicitud.id}
+    </div>
+    <div className="row">
+      <div className="col-sm-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title fw-bold text-center">
+              Datos de la Persona:
+            </h5>
+            <p className="card-text">
+              <DataPerson
+                documento={solicitud.persona.dni}
+                nombre={solicitud.persona.nombre}
+                apellido={solicitud.persona.apellido}
+                celular={solicitud.persona.celular}
+                domicilio={solicitud.persona.domicilio}
               />
-            </div>
-            <div className="m-2">
-              <label htmlFor="estado" className="form-label">
-                Estado
-              </label>
-              <select
-                className="form-select"
-                id="estado"
-                onChange={formik.handleChange}
-                value={formik.values.estado}
-              >
-                <option selected>Seleccionar una opción</option>
-                <option value={2}>Contactado</option>
-                <option value={3}>No atiende</option>
-                <option value={4}>No válido</option>
-              </select>
-            </div>
+            </p>
           </div>
-        </p>
-        {error && (
-          <div class="alert alert-danger" role="alert">
-            Error: Debes seleccionar una opción en Estado
-          </div>
-        )}
-        <div className="d-flex justify-content-around">
-          <button
-            type="submit"
-            className="btn btn-danger"
-            onClick={volverATabla}
-          >
-            Volver
-          </button>
-          <button type="submit" className="btn btn-success">
-            Guardar Solicitud
-          </button>
         </div>
       </div>
-      <div className="card-footer">Sistema Salud</div>
+      <div className="col-sm-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title fw-bold text-center">
+              Ultima modificación:
+            </h5>
+            <p className="card-text">
+              <DataPersonSalud
+                documento={solicitud.persona.dni}
+                nombre={solicitud.persona.saludNombre}
+                apellido={solicitud.persona.saludApellido}
+                domicilio={solicitud.persona.saludDomicilio}
+                localidad={solicitud.persona.saludLocalidad}
+                observaciones={solicitud.observaciones}
+              />
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="col-sm-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title fw-bold text-center">Datos a Modificar:</h5>
+            <p className="card-text">
+              <FormPerson formik={formik} error={error} />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {error && (
+      <div class="alert alert-danger mt-2" role="alert">
+        Error: Debes seleccionar una opción en Estado
+      </div>
+    )}
+    <div className="alert alert-success mt-2" role="alert">
+      <div className="d-flex justify-content-between align-items-center">
+        <button type="submit" className="btn btn-danger" onClick={volverATabla}>
+          Volver
+        </button>
+        <div className="fw-bold">
+          Sistema Salud
+        </div>
+        <button type="submit" className="btn btn-success">
+          Guardar Solicitud
+        </button>
+      </div>
     </div>
   </form>
 );
