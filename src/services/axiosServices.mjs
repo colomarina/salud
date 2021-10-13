@@ -59,8 +59,14 @@ const putPersona = (idPersona, datosPersona, token) => axios({
   url: `${urlPersona}/${idPersona}`,
   data: datosPersona
 })
+// GET A CONTACTADOS
+const getContactados = (idContactado, token) => axios({
+  method: 'GET',
+  headers: { Authorization: `Bearer ${token}` },
+  url: `${urlContactados}?solicitud=${idContactado}&_sort=created_at:DESC&_limit=1`
+})
 // POST A CONTACTADOS
-const postContactados = (datosContactados, token) => axios({
+const postContactados = async (datosContactados, token) => axios({
   method: 'POST',
   headers: { Authorization: `Bearer ${token}` },
   url: urlContactados,
@@ -76,5 +82,6 @@ export {
   getSolicitud,
   putSolicitud,
   putPersona,
+  getContactados,
   postContactados
 };

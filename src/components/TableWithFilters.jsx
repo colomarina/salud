@@ -5,6 +5,19 @@ import { useHistory } from "react-router-dom";
 import { putSolicitud, getSolicitud } from "../services/axiosServices.mjs";
 import { getUser } from "../services/userService";
 
+const colorEstado = {
+  2: "btn-success",
+  3: "btn-warning",
+  4: "btn-danger",
+  5: "btn-info",
+};
+const nombreEstado = {
+  2: "Contactado",
+  3: "No atiende",
+  4: "No válido",
+  5: "Primer ingreso",
+};
+
 // Define a default UI for filtering
 function DefaultColumnFilter({
   column: { filterValue, preFilteredRows, setFilter },
@@ -72,10 +85,10 @@ function Table({ columns, data }) {
     if (!data.capturado_por) {
       const dataSolicitud = await putSolicitud(
         idSolicitud,
-        { capturado_por: 'lmarina' },
+        { capturado_por: "lmarina" },
         token
       );
-      console.log('Solicitud', dataSolicitud)
+      console.log("Solicitud", dataSolicitud);
       if (dataSolicitud.status === 200)
         history.push(`/solicitud/${idSolicitud}`);
       else console.log(dataSolicitud);
@@ -137,7 +150,9 @@ function Table({ columns, data }) {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>
-                  <div className="col text-center">{column.render("Header")}</div>
+                  <div className="col text-center">
+                    {column.render("Header")}
+                  </div>
                   <div className="col">
                     {column.canFilter ? column.render("Filter") : null}
                   </div>
@@ -153,16 +168,22 @@ function Table({ columns, data }) {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   if (cell.column.Header === "Tomar Solicitud") {
-                    if(!cell.value.capturado_por){
+                    console.log(cell.value.estado);
+                    if (!cell.value.capturado_por) {
                       return (
                         <td {...cell.getCellProps()}>
                           <div className="d-grid gap-2">
                             <button
                               type="button"
-                              className="btn btn-success"
+                              className={`btn ${
+                                colorEstado[cell.value.estado]
+                              }`}
                               onClick={() => tomarSolicitud(cell.value.id)}
                             >
-                              Solicitud: {cell.value.id}
+                              <div>Solicitud: {cell.value.id}</div>
+                              <div>
+                                Ultimo estado: {nombreEstado[cell.value.estado]}
+                              </div>
                             </button>
                           </div>
                         </td>
@@ -173,7 +194,7 @@ function Table({ columns, data }) {
                           <div className="d-grid gap-2">
                             <button
                               type="button"
-                              className="btn btn-warning"
+                              className="btn btn-primary"
                               disabled
                             >
                               Tomada por: {cell.value.capturado_por}
@@ -181,7 +202,6 @@ function Table({ columns, data }) {
                           </div>
                         </td>
                       );
-
                     }
                   }
                   return (
@@ -274,10 +294,13 @@ const TableWithFilters = ({ hisopados }) => {
     []
   );
 
-  // const data = React.useMemo(() => makeData(10), []);
   const data = React.useMemo(() => hisopados, [hisopados]);
 
-  return <Table columns={columns} data={data} />;
+  return (
+    <>
+    <Table columns={columns} data={data} />
+    </>
+  );
 };
 
 export default TableWithFilters;
